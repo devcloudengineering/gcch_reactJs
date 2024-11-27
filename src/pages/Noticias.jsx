@@ -20,7 +20,11 @@ const Noticias = () => {
   };
   return (
     <>
-      <div className="container-fluid g-0 h-100" style={bgNoticiasGcch}>
+      <div
+        className="container-fluid g-0 h-100"
+        style={bgNoticiasGcch}
+        loading="lazy"
+      >
         <div className="row g-0">
           <div className="col-12">
             <Navmenu />
