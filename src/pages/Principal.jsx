@@ -9,15 +9,23 @@ import TablaPLanes from "../components/TablaPlanes/TablaPLanes.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import bannerPrincipal from "../assets/portada4.jpg";
 
 const Principal = () => {
   useEffect(() => {
     AOS.init();
   }, []);
+  const bgPrincipalGcch = {
+    backgroundImage: `url(${bannerPrincipal})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    height: "100vh",
+  };
   return (
     <>
       <div className="container-fluid p-0 m-0">
-        <div className="row g-0 bg-banner-gcch mb-5">
+        <div className="row g-0 mb-5" style={bgPrincipalGcch} loading="lazy">
           <div className="col-12">
             <Navmenu />
           </div>

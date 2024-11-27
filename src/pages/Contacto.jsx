@@ -4,14 +4,27 @@ import Navmenu from "../components/NavMenu/Navmenu";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import bannerContacto from "../assets/banner-contacto.jpg";
 
 const Contacto = () => {
   useEffect(() => {
     AOS.init();
   }, []);
+
+  const bgContactoGcch = {
+    backgroundImage: `url(${bannerContacto})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    height: "100vh",
+  };
   return (
     <>
-      <div className="container-fluid g-0 bg-contacto-gcch h-100">
+      <div
+        className="container-fluid g-0 h-100"
+        style={bgContactoGcch}
+        loading="lazy"
+      >
         <div className="row g-0">
           <div className="col-12">
             <Navmenu />

@@ -4,14 +4,23 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import Footer from "../components/Footer/Footer";
 import Navmenu from "../components/NavMenu/Navmenu";
+import bannerNoticias from "../assets/portada3.jpg";
 
 const Noticias = () => {
   useEffect(() => {
     AOS.init();
   }, []);
+
+  const bgNoticiasGcch = {
+    backgroundImage: `url(${bannerNoticias})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    height: "100vh",
+  };
   return (
     <>
-      <div className="container-fluid g-0 bg-noticias-gcch h-100">
+      <div className="container-fluid g-0 h-100" style={bgNoticiasGcch}>
         <div className="row g-0">
           <div className="col-12">
             <Navmenu />
