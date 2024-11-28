@@ -32,7 +32,7 @@ const Noticias = () => {
         </div>
 
         <div className="container py-4">
-          <div className="row g-0 mt-4 ">
+          <div className="row g-0 mt-5">
             <div className="col-12 my-5">
               <h2 className="fst-italic text-white text-center">
                 Anuncios Relevantes para ti
