@@ -69,7 +69,7 @@ const OffCanvasCotizar = ({ setIsModalOpen }) => {
           aria-label="Close"
         ></button>
       </div>
-      <div className="offcanvas-body">
+      <div className="offcanvas-body text-start">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
             <div className="col-12 mb-1">
@@ -183,51 +183,52 @@ const OffCanvasCotizar = ({ setIsModalOpen }) => {
                 <div className="col-12 mb-1">
                   <label className="form-label">Empresa</label>
 
-                  {/* Opción 1: Pyme */}
-                  <div className="form-check">
-                    <input
-                      type="radio"
-                      className="form-check-input"
-                      name="tipo"
-                      id="pyme"
-                      value="Pyme"
-                      {...register("tipo", {
-                        required: "Selecciona un tipo de empresa",
-                      })}
-                    />
-                    <label htmlFor="pyme" className="form-check-label">
-                      Pyme
-                    </label>
-                  </div>
+                  <div className="d-flex justify-content-between">
+                    {/* Opción 1: Pyme */}
+                    <div className="form-check">
+                      <input
+                        type="radio"
+                        className="form-check-input"
+                        name="tipo"
+                        id="pyme"
+                        value="Pyme"
+                        {...register("tipo", {
+                          required: "Selecciona un tipo de empresa",
+                        })}
+                      />
+                      <label htmlFor="pyme" className="form-check-label">
+                        Pyme
+                      </label>
+                    </div>
+                    {/* Opción 2: Mediana Empresa */}
+                    <div className="form-check">
+                      <input
+                        type="radio"
+                        className="form-check-input"
+                        name="tipo"
+                        id="mediana"
+                        value="Mediana Empresa"
+                        {...register("tipo")}
+                      />
+                      <label htmlFor="mediana" className="form-check-label">
+                        Mediana Empresa
+                      </label>
+                    </div>
 
-                  {/* Opción 2: Mediana Empresa */}
-                  <div className="form-check">
-                    <input
-                      type="radio"
-                      className="form-check-input"
-                      name="tipo"
-                      id="mediana"
-                      value="Mediana Empresa"
-                      {...register("tipo")}
-                    />
-                    <label htmlFor="mediana" className="form-check-label">
-                      Mediana Empresa
-                    </label>
-                  </div>
-
-                  {/* Opción 3: Gran Empresa */}
-                  <div className="form-check">
-                    <input
-                      type="radio"
-                      className="form-check-input"
-                      name="tipo"
-                      id="grande"
-                      value="Gran Empresa"
-                      {...register("tipo")}
-                    />
-                    <label htmlFor="grande" className="form-check-label">
-                      Gran Empresa
-                    </label>
+                    {/* Opción 3: Gran Empresa */}
+                    <div className="form-check">
+                      <input
+                        type="radio"
+                        className="form-check-input"
+                        name="tipo"
+                        id="grande"
+                        value="Gran Empresa"
+                        {...register("tipo")}
+                      />
+                      <label htmlFor="grande" className="form-check-label">
+                        Gran Empresa
+                      </label>
+                    </div>
                   </div>
 
                   {/* Mensaje de error */}
