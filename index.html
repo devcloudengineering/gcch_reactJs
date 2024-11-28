@@ -13,6 +13,20 @@
       background: rgb(2, 0, 36);
       background: linear-gradient(353deg, rgba(2, 0, 36, 1) 0%, rgba(9, 36, 121, 1) 57%, rgba(0, 212, 255, 1) 100%);
     }
+
+    .modal-dialog {
+      transition: all 0.3s ease-in-out;
+    }
+
+    .modal-dialog.animate-in {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .modal-dialog.animate-out {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
   </style>
 </head>
 

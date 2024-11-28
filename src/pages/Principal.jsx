@@ -8,19 +8,26 @@ import TablaPLanes from "../components/TablaPlanes/TablaPLanes.jsx";
 // Animate
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import bannerPrincipal from "../assets/portada4.jpg";
+import AlertaModal from "../components/AlertaModal/AlertaModal.jsx";
 
 const Principal = () => {
   useEffect(() => {
     AOS.init();
   }, []);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const bgPrincipalGcch = {
     backgroundImage: `url(${bannerPrincipal})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     height: "100vh",
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // Cierra el modal
   };
   return (
     <>
@@ -52,7 +59,13 @@ const Principal = () => {
                 >
                   Cotizar Servicio
                 </button>
-                <OffCanvasCotizar />
+                <OffCanvasCotizar setIsModalOpen={setIsModalOpen} />
+                <AlertaModal
+                  show={isModalOpen}
+                  title="Correo Enviado"
+                  body="El correo electrónico se ha enviado correctamente."
+                  onClose={handleCloseModal}
+                />
               </div>
             </div>
           </div>
