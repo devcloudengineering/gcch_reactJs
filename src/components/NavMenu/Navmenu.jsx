@@ -22,7 +22,10 @@ const Navmenu = () => {
         </button>
 
         {/* Menu de navegacion  */}
-        <div className="collapse navbar-collapse" id="menu">
+        <div
+          className="collapse navbar-collapse d-flex justify-content-between"
+          id="menu"
+        >
           <ul className="navbar-nav me-auto mb-2 mb-lg-0 gap-3 fw-bold">
             <li className="nav-item">
               <NavLink
@@ -105,6 +108,18 @@ const Navmenu = () => {
               </NavLink>
             </li>
           </ul>
+          <NavLink
+            to={"/login"}
+            className={({ isActive }) =>
+              `${
+                isActive
+                  ? "btn btn-success bg-gradient text-white-50 d-none d-lg-block"
+                  : "btn btn-success bg-gradient text-white d-none d-lg-block"
+              }`
+            }
+          >
+            Administrador
+          </NavLink>
         </div>
       </div>
     </nav>
