@@ -151,79 +151,141 @@ const Clientes = () => {
         value={filtering}
         onChange={(e) => setFiltering(e.target.value)}
         className="form-control"
+        placeholder="Buscar..."
       />
-      <table className="table table-sm table-striped table-borderless w-100 caption-top align-middle text-center">
-        <caption>Lista de clientes 2024</caption>
-        <thead>
-          {table.getHeaderGroups().map((headergroup) => (
-            <tr key={headergroup.id} className="table-dark mx-1">
-              {headergroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
+      <div
+        className="overflow-auto"
+        style={{ maxHeight: "500px", minHeight: "500px" }}
+      >
+        <table className="table table-sm table-striped table-borderless w-100 caption-top align-middle text-center">
+          <caption>Lista de clientes 2024</caption>
+          <thead>
+            {table.getHeaderGroups().map((headergroup) => (
+              <tr key={headergroup.id} className="table-dark mx-1">
+                {headergroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                    {
+                      { asc: "⬆️", desc: "⬇️" }[
+                        header.column.getIsSorted() ?? null
+                      ]
+                    }
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="px-1">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+          <tfoot className="table-dark">
+            {table.getFooterGroups().map((footerGroup) => (
+              <tr key={footerGroup.id}>
+                {footerGroup.headers.map((footer) => (
+                  <th key={footer.id}>
+                    {flexRender(
+                      footer.column.columnDef.footer,
+                      footer.getContext()
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </tfoot>
+        </table>
+      </div>
+      <div
+        className="d-flex justify-content-center align-items-center mt-3"
+        style={{ position: "sticky", bottom: 0 }}
+      >
+        <nav>
+          <ul className="pagination">
+            <li
+              className={`page-item ${
+                !table.getCanPreviousPage() ? "disabled" : ""
+              }`}
+            >
+              <button
+                className="page-link"
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+              >
+                &laquo; Primer
+              </button>
+            </li>
+            <li
+              className={`page-item ${
+                !table.getCanPreviousPage() ? "disabled" : ""
+              }`}
+            >
+              <button
+                className="page-link"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Anterior
+              </button>
+            </li>
+            {Array.from({ length: table.getPageCount() }, (_, index) => (
+              <li
+                key={index}
+                className={`page-item ${
+                  table.getState().pagination.pageIndex === index
+                    ? "active"
+                    : ""
+                }`}
+              >
+                <button
+                  className="page-link"
+                  onClick={() => table.setPageIndex(index)}
                 >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                  {
-                    { asc: "⬆️", desc: "⬇️" }[
-                      header.column.getIsSorted() ?? null
-                    ]
-                  }
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="px-1">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-        <tfoot className="table-dark">
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((footer) => (
-                <th key={footer.id}>
-                  {flexRender(
-                    footer.column.columnDef.footer,
-                    footer.getContext()
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
-      </table>
-
-      <button
-        className="btn btn-primary m-1"
-        onClick={() => table.setPageIndex(0)}
-      >
-        Primer Pagina
-      </button>
-      <button
-        className="btn btn-primary m-1"
-        onClick={() => table.previousPage()}
-      >
-        Pagina Anterior
-      </button>
-      <button className="btn btn-primary m-1" onClick={() => table.nextPage()}>
-        Pagina Siguiente
-      </button>
-      <button
-        className="btn btn-primary m-1"
-        onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-      >
-        Ultima Pagina
-      </button>
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+            <li
+              className={`page-item ${
+                !table.getCanNextPage() ? "disabled" : ""
+              }`}
+            >
+              <button
+                className="page-link"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Siguiente
+              </button>
+            </li>
+            <li
+              className={`page-item ${
+                !table.getCanNextPage() ? "disabled" : ""
+              }`}
+            >
+              <button
+                className="page-link"
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+              >
+                Última &raquo;
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   );
 };
