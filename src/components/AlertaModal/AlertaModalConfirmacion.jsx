@@ -12,9 +12,7 @@ const AlertaModalConfirmacion = ({ show, title, body, onClose, onConfirm }) => {
 
   const handleClose = () => {
     setIsVisible(false);
-    setTimeout(() => {
-      onClose();
-    }, 300);
+    onClose();
   };
 
   const handleConfirm = () => {

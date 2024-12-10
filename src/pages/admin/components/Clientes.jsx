@@ -8,14 +8,60 @@ import {
   getFilteredRowModel,
 } from "@tanstack/react-table";
 import AlertaModal from "../../../components/AlertaModal/AlertaModal";
+import AlertaModalConfirmacion from "../../../components/AlertaModal/AlertaModalConfirmacion";
 
 const Clientes = () => {
   const [data, setData] = useState(null); // Estado para almacenar los datos
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
   const [error, setError] = useState(null); // Estado para manejar errores
+
+  // Modal eliminacion
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleCloseModal = () => {
     setIsModalOpen(false); // Cierra el modal
+  };
+
+  // Modal confirmacion eliminacion
+  const [showModal, setShowModal] = useState(false);
+  const [clienteIdToDelete, setClienteIdToDelete] = useState(null);
+  const handleOpenModal = (id) => {
+    setClienteIdToDelete(id); // Guarda el id del cliente a eliminar
+    setShowModal(true); // Abre el modal de confirmación
+  };
+  const handleCloseModalConfirm = () => {
+    setShowModal(false);
+  };
+  const handleConfirmDelete = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token no encontrado. Por favor, inicia sesión.");
+      }
+
+      const response = await fetch(
+        `http://localhost:3000/api/clientes/${clienteIdToDelete}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            token,
+          },
+        }
+      );
+
+      const result = await response.json();
+      const { clientes } = result;
+      if (response.ok) {
+        setData(clientes); // Actualiza la lista de clientes
+        setShowModal(false); // Cierra el modal de confirmación
+        setIsModalOpen(true); // Abre el modal de éxito
+      } else {
+        console.error(result);
+        throw new Error(`Error: ${result.msg}`);
+      }
+    } catch (error) {
+      alert(`Error al eliminar el cliente: ${error}`);
+    }
   };
 
   const columns = [
@@ -113,7 +159,7 @@ const Clientes = () => {
             </button>
             <button
               className="btn btn-danger btn-sm px-4 py-2 shadow-sm border-0 rounded-3 hover:bg-danger focus:ring-2 focus:ring-danger small"
-              onClick={() => handleDelete(cliente._id)}
+              onClick={() => handleOpenModal(cliente._id)}
             >
               Eliminar
             </button>
@@ -126,38 +172,6 @@ const Clientes = () => {
   const handleEdit = (cliente) => {
     // Lógica para modificar el cliente (abrir formulario de edición o algo similar)
     console.log("Editar cliente", cliente);
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      // setIsModalOpenConfirmacion(true);
-      const token = localStorage.getItem("token"); // Obtener el token de localStorage (o de donde lo almacenes)
-      if (!token) {
-        throw new Error("Token no encontrado. Por favor, inicia sesión.");
-      }
-
-      const response = await fetch(`http://localhost:3000/api/clientes/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          token,
-        },
-      });
-
-      const result = await response.json();
-      const { clientes } = result;
-      console.log(response);
-      if (response.ok) {
-        // Elimina el cliente de la lista de datos
-        setData(clientes);
-        setIsModalOpen(true);
-      } else {
-        console.error(result);
-        throw new Error(`Error: ${result.msg}`);
-      }
-    } catch (error) {
-      alert(`Error al eliminar el cliente: ${error}`);
-    }
   };
 
   useEffect(() => {
@@ -360,6 +374,15 @@ const Clientes = () => {
                   title="Cliente eliminado exitosamente"
                   body="El cliente ha sido eliminado de la base de datos"
                   onClose={handleCloseModal}
+                />
+              }
+              {
+                <AlertaModalConfirmacion
+                  show={showModal}
+                  title="Confirmación de Eliminación"
+                  body="¿Estás seguro de que deseas eliminar este cliente?"
+                  onClose={handleCloseModalConfirm}
+                  onConfirm={handleConfirmDelete}
                 />
               }
             </li>
