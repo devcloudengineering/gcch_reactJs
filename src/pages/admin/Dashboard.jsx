@@ -35,7 +35,7 @@ const Dashboard = () => {
         </aside>
 
         {/* Contenido principal */}
-        <main className="main col">
+        <main className="main col overflow-hidden vh-100 h-100">
           <Routes>
             <Route path="" element={<PrincipalAdmin />} />
             <Route path="clientes" element={<Clientes />} />

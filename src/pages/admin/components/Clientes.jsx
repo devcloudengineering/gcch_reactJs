@@ -145,12 +145,12 @@ const Clientes = () => {
   if (error) return <p>Error: {error}</p>; // Mensaje de error
 
   return (
-    <div className="table-responsive w-100 small">
+    <div className="table-responsive table-sm small">
       <input
         type="text"
         value={filtering}
         onChange={(e) => setFiltering(e.target.value)}
-        className="form-control"
+        className="form-control "
         placeholder="Buscar..."
       />
       <div
