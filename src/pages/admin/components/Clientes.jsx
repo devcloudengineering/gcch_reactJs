@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-table";
 import AlertaModal from "../../../components/AlertaModal/AlertaModal";
 import AlertaModalConfirmacion from "../../../components/AlertaModal/AlertaModalConfirmacion";
+import FormModificarClientes from "./FormModificarClientes/FormModificarClientes";
 
 const Clientes = () => {
   const [data, setData] = useState(null); // Estado para almacenar los datos
@@ -31,6 +32,20 @@ const Clientes = () => {
   const handleCloseModalConfirm = () => {
     setShowModal(false);
   };
+
+  // Modal de Modificacion
+  // Estado para el modal de edición
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [clienteToEdit, setClienteToEdit] = useState(null);
+  const handleEdit = (cliente) => {
+    setClienteToEdit(cliente); // Establece el cliente actual
+    setIsEditModalOpen(true); // Abre el modal
+  };
+  const handleCloseModalModificar = () => {
+    setIsEditModalOpen(false);
+  };
+
+  // Fetch de eliminacion logica
   const handleConfirmDelete = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -153,7 +168,7 @@ const Clientes = () => {
           <div className="d-flex gap-2">
             <button
               className="btn btn-warning btn-sm px-4 py-2 shadow-sm border-0 rounded-3 hover:bg-warning focus:ring-2 focus:ring-warning small"
-              onClick={() => handleEdit(cliente._id)}
+              onClick={() => handleEdit(cliente)}
             >
               Modificar
             </button>
@@ -168,11 +183,6 @@ const Clientes = () => {
       },
     },
   ];
-
-  const handleEdit = (cliente) => {
-    // Lógica para modificar el cliente (abrir formulario de edición o algo similar)
-    console.log("Editar cliente", cliente);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -383,6 +393,15 @@ const Clientes = () => {
                   body="¿Estás seguro de que deseas eliminar este cliente?"
                   onClose={handleCloseModalConfirm}
                   onConfirm={handleConfirmDelete}
+                />
+              }
+
+              {
+                <FormModificarClientes
+                  show={isEditModalOpen}
+                  onClose={handleCloseModalModificar}
+                  cliente={clienteToEdit}
+                  actualizarTabla={setData}
                 />
               }
             </li>
