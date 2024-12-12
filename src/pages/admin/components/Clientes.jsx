@@ -13,6 +13,7 @@ import FormModificarClientes from "./FormModificarClientes/FormModificarClientes
 
 const Clientes = () => {
   const [data, setData] = useState(null); // Estado para almacenar los datos
+  const [total, setTotal] = useState(null); // Estado para almacenar total de clientes
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
   const [error, setError] = useState(null); // Estado para manejar errores
 
@@ -192,8 +193,10 @@ const Clientes = () => {
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-        const { clientes } = await response.json();
+        const { clientes, total } = await response.json();
         setData(clientes); // Actualiza el estado con los datos
+        console.log("Total de clientes", total);
+        setTotal(total);
       } catch (err) {
         setError(err.message); // Manejo de errores
       } finally {
@@ -254,7 +257,10 @@ const Clientes = () => {
         style={{ maxHeight: "500px", minHeight: "500px" }}
       >
         <table className="table table-sm table-striped table-borderless w-100 caption-top align-middle text-center">
-          <caption>Lista de clientes 2024</caption>
+          <caption>
+            Lista de clientes 2024{" "}
+            <span className="badge bg-primary">{total} Clientes</span>
+          </caption>
           <thead>
             {table.getHeaderGroups().map((headergroup) => (
               <tr key={headergroup.id} className="table-dark mx-1">
