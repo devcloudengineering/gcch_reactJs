@@ -251,6 +251,9 @@ const Clientes = () => {
           placeholder="Buscar..."
           id="buscar"
         />
+        <button className="btn btn-dark bg-gradient shadow-lg">
+          Añadir Cliente
+        </button>
       </div>
       <div
         className="overflow-auto"
@@ -259,7 +262,7 @@ const Clientes = () => {
         <table className="table table-sm table-striped table-borderless w-100 caption-top align-middle text-center">
           <caption>
             Lista de clientes 2024{" "}
-            <span className="badge bg-primary">{total} Clientes</span>
+            <span className="badge bg-info">{total} Clientes</span>
           </caption>
           <thead>
             {table.getHeaderGroups().map((headergroup) => (
