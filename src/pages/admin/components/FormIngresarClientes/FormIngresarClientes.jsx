@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 
-const FormModificarClientes = ({
-  cliente,
-  onClose,
+const FormIngresarClientes = ({
   show,
+  onClose,
   actualizarTabla,
   actualizarTotal,
 }) => {
@@ -15,59 +14,63 @@ const FormModificarClientes = ({
       setIsVisible(true);
     }
   }, [show]);
-
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
     // handleChange,
-  } = useForm({ mode: "all", defaultValues: cliente });
+  } = useForm({ mode: "all" });
   const [submitStatus, setSubmitStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleClose = () => {
     setIsVisible(false);
     onClose();
+    reset();
   };
-
-  useEffect(() => {
-    // Sincroniza valores iniciales del formulario cuando cambie cliente
-    if (cliente) {
-      reset(cliente);
-    }
-  }, [cliente, reset]);
   const onSubmit = async (data) => {
     try {
+      console.log(data);
       setIsSubmitting(true);
-      const response = await fetch(
-        `http://localhost:3000/api/clientes/${cliente._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
 
+      // Realizar la solicitud al servidor
+      const response = await fetch(`http://localhost:3000/api/clientes/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      // Verificar si la respuesta fue exitosa
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.msg || "Ocurrió un error al procesar la solicitud."
+        );
+      }
+
+      // Procesar el resultado de la solicitud
       const result = await response.json();
 
-      if (result.ok) {
-        setSubmitStatus("Cliente actualizado correctamente");
-        setTimeout(() => {
-          setSubmitStatus("");
-          handleClose();
-        }, 2500);
-        const { clientes, total } = result;
-        reset(clientes);
-        actualizarTabla(clientes);
-        actualizarTotal(total);
-      } else {
-        throw new Error(result.error || "Error desconocido");
-      }
+      // Mostrar mensaje de éxito
+      setSubmitStatus("Cliente ingresado correctamente");
+      setTimeout(() => {
+        setSubmitStatus("");
+        handleClose();
+      }, 2500);
+
+      // Actualizar datos en el cliente
+      const { clientes, total } = result;
+      reset(clientes);
+      actualizarTabla(clientes);
+      actualizarTotal(total);
     } catch (error) {
-      setSubmitStatus("No se pudo actualizar el cliente");
-      console.error("Error en la solicitud:", error.message);
+      // Manejar errores y mostrar mensaje al usuario
+      setSubmitStatus(
+        `Error: ${error.message || "No se pudo ingresar el cliente"}`
+      );
+      console.error("Error en la solicitud:", error);
       setTimeout(() => {
         setSubmitStatus(null);
       }, 5000);
@@ -94,7 +97,7 @@ const FormModificarClientes = ({
       >
         <div className="modal-content bg-light">
           <div className="modal-header">
-            <h5 className="modal-title">Modificacion del Cliente</h5>
+            <h5 className="modal-title">Ingresar Cliente</h5>
             <button
               type="button"
               className="btn-close"
@@ -288,26 +291,7 @@ const FormModificarClientes = ({
                   )}
                 </div>
               </div>
-
-              <div className="row">
-                <div className="col-12 d-flex justify-content-center">
-                  <div>
-                    <div className="form-check mb-1">
-                      <input
-                        type="checkbox"
-                        name="estado"
-                        id="estado"
-                        className="form-check-input"
-                        {...register("estado")}
-                      />
-                      <label htmlFor="estado" className="form-check-label">
-                        Reactivar Cliente
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
+              <div className="row mt-2">
                 <div className="col-12 d-flex justify-content-center gap-4">
                   <button
                     type="button"
@@ -330,10 +314,10 @@ const FormModificarClientes = ({
                           role="status"
                           aria-hidden="true"
                         ></span>{" "}
-                        Actualizando...
+                        Ingresando...
                       </>
                     ) : (
-                      "Actualizar"
+                      "Ingresar"
                     )}
                   </button>
                 </div>
@@ -353,22 +337,11 @@ const FormModificarClientes = ({
   );
 };
 
-FormModificarClientes.propTypes = {
-  cliente: PropTypes.shape({
-    cliente: PropTypes.string,
-    rutcliente: PropTypes.string,
-    razonsocial: PropTypes.string,
-    rutempresa: PropTypes.string,
-    domicilio: PropTypes.string,
-    notificaciones: PropTypes.string,
-    telefono: PropTypes.number,
-    "representante(s)": PropTypes.string,
-    _id: PropTypes._id,
-  }).isRequired,
+FormIngresarClientes.propTypes = {
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   actualizarTabla: PropTypes.func.isRequired,
   actualizarTotal: PropTypes.func.isRequired,
 };
 
-export default FormModificarClientes;
+export default FormIngresarClientes;

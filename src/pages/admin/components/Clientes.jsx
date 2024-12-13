@@ -10,10 +10,11 @@ import {
 import AlertaModal from "../../../components/AlertaModal/AlertaModal";
 import AlertaModalConfirmacion from "../../../components/AlertaModal/AlertaModalConfirmacion";
 import FormModificarClientes from "./FormModificarClientes/FormModificarClientes";
+import FormIngresarClientes from "./FormIngresarClientes/FormIngresarClientes";
 
 const Clientes = () => {
   const [data, setData] = useState(null); // Estado para almacenar los datos
-  const [total, setTotal] = useState(null); // Estado para almacenar total de clientes
+  const [totalClientes, setTotalClientes] = useState(null); // Estado para almacenar total de clientes
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
   const [error, setError] = useState(null); // Estado para manejar errores
 
@@ -46,6 +47,15 @@ const Clientes = () => {
     setIsEditModalOpen(false);
   };
 
+  // Modal de ingresar clientes
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const handleCloseModalIngresar = () => {
+    setIsAddModalOpen(false);
+  };
+  const handleOpenModalIngresar = () => {
+    setIsAddModalOpen(true);
+  };
+
   // Fetch de eliminacion logica
   const handleConfirmDelete = async () => {
     try {
@@ -66,11 +76,12 @@ const Clientes = () => {
       );
 
       const result = await response.json();
-      const { clientes } = result;
+      const { clientes, total } = result;
       if (response.ok) {
         setData(clientes); // Actualiza la lista de clientes
         setShowModal(false); // Cierra el modal de confirmación
         setIsModalOpen(true); // Abre el modal de éxito
+        setTotalClientes(total);
       } else {
         console.error(result);
         throw new Error(`Error: ${result.msg}`);
@@ -145,7 +156,7 @@ const Clientes = () => {
     },
     {
       header: "Representate(s)",
-      accessorKey: "representante(s)",
+      accessorKey: "representantes",
       footer: "Representate(s)",
     },
     {
@@ -195,8 +206,8 @@ const Clientes = () => {
         }
         const { clientes, total } = await response.json();
         setData(clientes); // Actualiza el estado con los datos
+        setTotalClientes(total);
         console.log("Total de clientes", total);
-        setTotal(total);
       } catch (err) {
         setError(err.message); // Manejo de errores
       } finally {
@@ -239,7 +250,7 @@ const Clientes = () => {
 
   return (
     <div className="table-responsive table-sm small">
-      <div className="input-group">
+      <div className="input-group shadow">
         <span className="input-group-text" id="buscar-addon">
           🔍
         </span>
@@ -250,11 +261,19 @@ const Clientes = () => {
           className="form-control"
           placeholder="Buscar..."
           id="buscar"
+          aria-label="Buscar"
+          aria-describedby="buscar-addon"
         />
-        <button className="btn btn-dark bg-gradient shadow-lg">
-          Añadir Cliente
-        </button>
+        <span
+          className="input-group-text"
+          id="agregar"
+          type="button"
+          onClick={() => handleOpenModalIngresar()}
+        >
+          ➕
+        </span>
       </div>
+
       <div
         className="overflow-auto"
         style={{ maxHeight: "500px", minHeight: "500px" }}
@@ -262,7 +281,9 @@ const Clientes = () => {
         <table className="table table-sm table-striped table-borderless w-100 caption-top align-middle text-center">
           <caption>
             Lista de clientes 2024{" "}
-            <span className="badge bg-info">{total} Clientes</span>
+            <span className="badge bg-primary bg-gradient">
+              {totalClientes} Clientes
+            </span>
           </caption>
           <thead>
             {table.getHeaderGroups().map((headergroup) => (
@@ -411,6 +432,15 @@ const Clientes = () => {
                   onClose={handleCloseModalModificar}
                   cliente={clienteToEdit}
                   actualizarTabla={setData}
+                  actualizarTotal={setTotalClientes}
+                />
+              }
+              {
+                <FormIngresarClientes
+                  show={isAddModalOpen}
+                  onClose={handleCloseModalIngresar}
+                  actualizarTabla={setData}
+                  actualizarTotal={setTotalClientes}
                 />
               }
             </li>
