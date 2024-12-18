@@ -1,10 +1,10 @@
 import { Route, Routes, NavLink } from "react-router-dom";
 import PrincipalAdmin from "./components/PrincipalAdmin";
 import Clientes from "./components/Clientes";
+import Anuncios from "./components/Anuncios";
 
 // Componentes de las secciones
 const Pagos = () => <h2>Pagos</h2>;
-const Anuncios = () => <h2>Anuncios</h2>;
 
 const Dashboard = () => {
   return (

@@ -2,11 +2,11 @@ const TablaPLanes = () => {
   return (
     <>
       <div className="table-responsive">
-        <table className="table table-sm table-striped table-borderless ">
+        <table className="table table-sm table-striped table-borderless">
           <caption>Precios de planes contables mensuales</caption>
           <thead>
             <tr>
-              <th style={{ width: "25%" }}></th>
+              <th style={{ width: "25%" }} className="table-secondary"></th>
               <th style={{ width: "25%" }}>
                 <div className="card text-center bg-primary bg-gradient text-white">
                   <div className="card-header h2 test-uppercase fw-bold">
