@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import AlertaModal from "../../../components/AlertaModal/AlertaModal";
 import AlertaModalConfirmacion from "../../../components/AlertaModal/AlertaModalConfirmacion";
+import FormModificarAnuncios from "./FormModificarAnuncios/FormModificarAnuncios";
 
 const Anuncios = () => {
   const {
@@ -11,13 +12,17 @@ const Anuncios = () => {
     reset,
   } = useForm();
 
+  // Errores formulario
   const [submitStatus, setSubmitStatus] = useState(null);
   const [error, setError] = useState(null);
-  const [anuncios, setAnuncios] = useState([]); // Estado para los anuncios
+
+  // Carga
   const [isLoading, setIsLoading] = useState(false);
+  // Estado para los anuncios
+  const [anuncios, setAnuncios] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleCloseModal = () => {
-    setIsModalOpen(false); // Cierra el modal
+    setIsModalOpen(false);
   };
 
   // Modal confirmacion eliminacion
@@ -29,6 +34,17 @@ const Anuncios = () => {
   const handleOpenModal = (id) => {
     setAnuncioIdToDelete(id); // Guarda el id del cliente a eliminar
     setShowModal(true); // Abre el modal de confirmación
+  };
+
+  // Modal modificacion
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [anuncioToEdit, setNnuncioToEdit] = useState(null);
+  const handleCloseModalModificar = () => {
+    setIsEditModalOpen(false);
+  };
+  const handleEdit = (anuncio) => {
+    setNnuncioToEdit(anuncio); // Establece el cliente actual
+    setIsEditModalOpen(true); // Abre el modal
   };
 
   // Manejo centralizado de errores
@@ -302,7 +318,7 @@ const Anuncios = () => {
                     <div className="d-flex justify-content-between align-items-center">
                       <button
                         className="btn btn-warning btn-sm rounded-pill px-4"
-                        onClick={() => console.log("Modificar", anuncio._id)}
+                        onClick={() => handleEdit(anuncio)}
                       >
                         Modificar
                       </button>
@@ -319,6 +335,14 @@ const Anuncios = () => {
                           body="¿Estás seguro de que deseas eliminar este anuncio?"
                           onClose={handleCloseModalConfirm}
                           onConfirm={() => handleDelete(anuncio._id)}
+                        />
+                      }
+                      {
+                        <FormModificarAnuncios
+                          show={isEditModalOpen}
+                          onClose={handleCloseModalModificar}
+                          anuncio={anuncioToEdit}
+                          setanuncio={setAnuncios}
                         />
                       }
                     </div>

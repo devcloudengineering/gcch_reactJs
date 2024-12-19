@@ -1,18 +1,8 @@
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
 
 const AlertaModalConfirmacion = ({ show, title, body, onClose, onConfirm }) => {
-  const [isVisible, setIsVisible] = useState(show);
-
-  useEffect(() => {
-    if (show) {
-      setIsVisible(true);
-    }
-  }, [show]);
-
   const handleClose = () => {
-    setIsVisible(false);
-    onClose();
+    onClose(); // Llamada al callback para cerrar el modal
   };
 
   const handleConfirm = () => {
@@ -22,20 +12,16 @@ const AlertaModalConfirmacion = ({ show, title, body, onClose, onConfirm }) => {
 
   return (
     <div
-      className={`modal fade ${isVisible ? "show" : ""}`}
+      className={`modal fade ${show ? "show" : ""}`}
       tabIndex="-1"
       style={{
-        display: show || isVisible ? "block" : "none",
+        display: show ? "block" : "none",
         backgroundColor: "rgba(0, 0, 0, 0.5)",
       }}
       role="dialog"
       aria-hidden={!show}
     >
-      <div
-        className={`modal-dialog text-center ${
-          isVisible ? "animate-in" : "animate-out"
-        }`}
-      >
+      <div className="modal-dialog text-center">
         <div className="modal-content bg-light">
           <div className="modal-header">
             <h5 className="modal-title">{title}</h5>
