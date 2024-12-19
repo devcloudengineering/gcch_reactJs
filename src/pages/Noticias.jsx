@@ -17,21 +17,18 @@ const Noticias = () => {
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    height: "100vh",
   };
-  return (
-    <>
-      <div
-        className="container-fluid g-0 h-100"
-        style={bgNoticiasGcch}
-        loading="lazy"
-      >
-        <div className="row g-0">
-          <div className="col-12">
-            <Navmenu />
-          </div>
-        </div>
 
+  return (
+    <div
+      className="d-flex flex-column min-vh-100" // Asegura diseño flexible
+      style={bgNoticiasGcch}
+    >
+      <header>
+        <Navmenu />
+      </header>
+
+      <main className="flex-grow-1">
         <div className="container py-4">
           <div className="row g-0 mt-5">
             <div className="col-12 my-5">
@@ -51,14 +48,12 @@ const Noticias = () => {
             </div>
           </div>
         </div>
+      </main>
 
-        <div className="row g-0">
-          <div className="col-12">
-            <Footer />
-          </div>
-        </div>
-      </div>
-    </>
+      <footer>
+        <Footer />
+      </footer>
+    </div>
   );
 };
 
