@@ -10,7 +10,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({ mode: "all" });
+  } = useForm();
   const navigate = useNavigate();
   const [submitStatus, setSubmitStatus] = useState(null);
   const { login } = useAuth();
